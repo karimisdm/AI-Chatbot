@@ -11,7 +11,7 @@ function App() {
         <h2 className={styles.Title}>AI ChatBot</h2>
       </header>
       <div className={styles.ChatContainer}>
-        <Chat messages={messages} setMessages={setMessages} />
+        <Chat messages={messages}/>
       </div>
     </div>
   )
