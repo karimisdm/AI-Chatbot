@@ -1,6 +1,7 @@
 import styles from './App.module.css'
-import { Chat } from './components/chat/chat.jsx'
 import { useState } from 'react';
+import { Chat } from './components/chat/chat.jsx'
+import { Controls } from './components/controls/Controls.jsx';
 function App() {
   const [messages, setMessages] = useState(initialMessages)
 
@@ -13,6 +14,7 @@ function App() {
       <div className={styles.ChatContainer}>
         <Chat messages={messages}/>
       </div>
+      <Controls/>
     </div>
   )
 };
