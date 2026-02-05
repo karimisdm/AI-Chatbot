@@ -10,12 +10,19 @@ export function Controls({onSend}){
           onSend(input);
           setInput('');
     }  
+  };
+  function handleEnterPress(e){
+    if(e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      handleInputSend()
+    }
   }
   
   return(
     <div className={styles.Controls}>
         <div className={styles.TextAreaContainer}>
-            <textarea className={styles.TextArea} placeholder="Message AI" value={input} onChange={(e)=> setInput(e.target.value)}/>
+            <textarea className={styles.TextArea} placeholder="Message AI" value={input} onChange={(e)=> setInput(e.target.value)}
+               onKeyDown={handleEnterPress}/>
         </div>
         <button className={styles.Button} onClick={handleInputSend}><SendIcon/></button>
     </div>
