@@ -1,11 +1,22 @@
+import { useState } from 'react'
 import styles from './Controls.module.css'
-export function Controls(){
+
+export function Controls({onSend}){
+  const [input, setInput]= useState('');
+
+  function handleInputSend(){
+    if(input.trim() === '') return;
+    else
+      onSend(input);
+      setInput('');
+  }
+  
   return(
     <div className={styles.Controls}>
         <div className={styles.TextAreaContainer}>
-            <textarea className={styles.TextArea} placeholder="Message AI"/>
+            <textarea className={styles.TextArea} placeholder="Message AI" value={input} onChange={(e)=> setInput(e.target.value)}/>
         </div>
-        <button className={styles.Button}><SendIcon/></button>
+        <button className={styles.Button} onClick={handleInputSend}><SendIcon/></button>
     </div>
   )
 
