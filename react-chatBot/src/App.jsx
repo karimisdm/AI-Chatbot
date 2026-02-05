@@ -6,7 +6,7 @@ function App() {
   const [messages, setMessages] = useState([])
   
   function handleMessageSend(input){
-    alert(input);
+    setMessages(prevMessages => [...prevMessages, {role:'user', content: input}])
 
   }
   return (

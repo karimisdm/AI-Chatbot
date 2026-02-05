@@ -6,9 +6,10 @@ export function Controls({onSend}){
 
   function handleInputSend(){
     if(input.trim() === '') return;
-    else
-      onSend(input);
-      setInput('');
+    else{
+          onSend(input);
+          setInput('');
+    }  
   }
   
   return(
