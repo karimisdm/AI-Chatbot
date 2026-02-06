@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { Chat } from './components/chat/Chat.jsx'
 import { Controls } from './components/controls/Controls.jsx';
 import { GoogleAI_Assistant } from './assistants/googleai.js';
+// import { openAI_Assistant } from './assistants/openai.js';
 
 function App() {
   const [messages, setMessages] = useState([]);
   const assistant = new GoogleAI_Assistant();
+  // const assistant = new openAI_Assistant();
 
   function addMessage(message) {
     setMessages(prevMessages => [...prevMessages, message])
