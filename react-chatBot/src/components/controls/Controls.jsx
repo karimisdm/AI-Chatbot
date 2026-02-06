@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styles from './Controls.module.css'
 import TextareaAutosize from 'react-textarea-autosize';
 
-export function Controls({onSend}){
+export function Controls({isDisabled,onSend}){
   const [input, setInput]= useState('');
 
   function handleInputSend(){
@@ -23,9 +23,9 @@ export function Controls({onSend}){
     <div className={styles.Controls}>
         <div className={styles.TextAreaContainer}>
             <TextareaAutosize minRows={1} maxRows={4} className={styles.TextArea} placeholder="Message AI" value={input} onChange={(e)=> setInput(e.target.value)}
-               onKeyDown={handleEnterPress}/>
+               onKeyDown={handleEnterPress} disabled={isDisabled}/>
         </div>
-        <button className={styles.Button} onClick={handleInputSend}><SendIcon/></button>
+        <button className={styles.Button} onClick={handleInputSend} disabled={isDisabled}><SendIcon/></button>
     </div>
   )
 
