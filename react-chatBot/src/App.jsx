@@ -2,23 +2,39 @@ import styles from './App.module.css'
 import { useState } from 'react';
 import { Chat } from './components/chat/Chat.jsx'
 import { Controls } from './components/controls/Controls.jsx';
+import { GoogleAI_Assistant } from './assistants/googleai.js';
+
 function App() {
-  const [messages, setMessages] = useState([])
-  
-  function handleMessageSend(input){
-    setMessages(prevMessages => [...prevMessages, {role:'user', content: input}])
+  const [messages, setMessages] = useState([]);
+  const assistant = new GoogleAI_Assistant();
+
+  function addMessage(message) {
+    setMessages(prevMessages => [...prevMessages, message])
+  }
+
+  async function handleMessageSend(input) {
+    addMessage({ content: input, role: 'user' });
+    try {
+      const result = await assistant.chatWithAI(input);
+       addMessage({ content: result, role: 'bot' });
+    } catch (error) {
+      addMessage({
+        content: "Sorry, there was an error processing your request. Please try again later. Error: " + error.message,
+        role: 'System'
+      })
+    }
 
   }
   return (
     <div className={styles.App}>
       <header className={styles.Header}>
-        <img src='./public/chatbot.png' className={styles.Logo} />
+        <img src='./chatbot.png' className={styles.Logo} />
         <h2 className={styles.Title}>AI ChatBot</h2>
       </header>
       <div className={styles.ChatContainer}>
-        <Chat messages={messages}/>
+        <Chat messages={messages} />
       </div>
-      <Controls onSend={handleMessageSend}/>
+      <Controls onSend={handleMessageSend} />
     </div>
   )
 };
