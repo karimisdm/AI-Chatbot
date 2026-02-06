@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { Chat } from './components/chat/Chat.jsx'
 import { Controls } from './components/controls/Controls.jsx';
 import { GoogleAI_Assistant } from './assistants/googleai.js';
+import { Loader } from './components/loader/Loader.jsx';
 // import { openAI_Assistant } from './assistants/openai.js';
 
 function App() {
   const [messages, setMessages] = useState([]);
   const assistant = new GoogleAI_Assistant();
+  const [isLoading, setIsLoading] = useState(false);
   // const assistant = new openAI_Assistant();
 
   function addMessage(message) {
@@ -16,6 +18,7 @@ function App() {
 
   async function handleMessageSend(input) {
     addMessage({ content: input, role: 'user' });
+    setIsLoading(true);
     try {
       const result = await assistant.chatWithAI(input);
        addMessage({ content: result, role: 'bot' });
@@ -24,11 +27,14 @@ function App() {
         content: "Sorry, there was an error processing your request. Please try again later. Error: " + error.message,
         role: 'System'
       })
+    }finally{
+      setIsLoading(false);
     }
 
   }
   return (
     <div className={styles.App}>
+      {isLoading && <Loader/>}
       <header className={styles.Header}>
         <img src='./chatbot.png' className={styles.Logo} />
         <h2 className={styles.Title}>AI ChatBot</h2>
