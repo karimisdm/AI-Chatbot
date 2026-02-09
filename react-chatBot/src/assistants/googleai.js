@@ -12,8 +12,10 @@ export class GoogleAI_Assistant {
 
     async chatWithAI(content) {
         try {
+            
             const result = await this.chat.sendMessage(content);
-            return result.response.text();
+            const text = result.response.text();
+            return text;
         } catch (error) {
             console.error("Error in chatWithAI:", error); 
             throw error; 

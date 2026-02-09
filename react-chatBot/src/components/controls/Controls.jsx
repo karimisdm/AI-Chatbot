@@ -1,9 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './Controls.module.css'
 import TextareaAutosize from 'react-textarea-autosize';
 
 export function Controls({isDisabled,onSend}){
   const [input, setInput]= useState('');
+  const textareaRef = useRef(null);
+
+  useEffect(()=>{
+    if(!isDisabled){
+      textareaRef.current.focus();
+    }
+
+  },[isDisabled])
 
   function handleInputSend(){
     if(input.trim() === '') return;
@@ -22,7 +30,7 @@ export function Controls({isDisabled,onSend}){
   return(
     <div className={styles.Controls}>
         <div className={styles.TextAreaContainer}>
-            <TextareaAutosize minRows={1} maxRows={4} className={styles.TextArea} placeholder="Message AI" value={input} onChange={(e)=> setInput(e.target.value)}
+            <TextareaAutosize ref={textareaRef} minRows={1} maxRows={4} className={styles.TextArea} placeholder="Message AI" value={input} onChange={(e)=> setInput(e.target.value)}
                onKeyDown={handleEnterPress} disabled={isDisabled}/>
         </div>
         <button className={styles.Button} onClick={handleInputSend} disabled={isDisabled}><SendIcon/></button>
