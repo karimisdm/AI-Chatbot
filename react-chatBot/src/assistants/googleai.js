@@ -20,5 +20,18 @@ export class GoogleAI_Assistant {
             console.error("Error in chatWithAI:", error); 
             throw error; 
         }
+    };
+    //using generator for handling streaming responses.
+    async *chatStreaming(content){
+        try {
+            const result = await this.chat.sendMessageStreaming(content);
+
+            for await (const chunk of result){
+                yield chunk.response.text();
+            }
+        } catch (error) {
+             console.error("Error in chatStreaming:", error); 
+             throw error;        
+        }
     }
 }
