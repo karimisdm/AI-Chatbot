@@ -10,7 +10,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const assistant = new GoogleAI_Assistant();
   const [isLoading, setIsLoading] = useState(false);
-  // const assistant = new openAI_Assistant();
+  const [isStreaming, setIsStreaming] = useState(false);  // const assistant = new openAI_Assistant();
 
   function addMessage(message) {
     setMessages(prevMessages => [...prevMessages, message])
@@ -34,9 +34,11 @@ function App() {
           isFirstChunk = true;
           addMessage({content:'', role:'bot'});
           setIsLoading(false);
+          setIsStreaming(true);
         }
         updateLastMessageContent(chunk);
       } 
+      setIsStreaming(false);
     } catch (error) {
       addMessage({
         content: "Sorry, there was an error processing your request. Please try again later. Error: " + error.message,
@@ -45,6 +47,7 @@ function App() {
       // setIsLoading(false);
     }finally{
       setIsLoading(false);
+      setIsStreaming(false);
     }
 
   }
@@ -58,7 +61,7 @@ function App() {
       <div className={styles.ChatContainer}>
         <Chat messages={messages} />
       </div>
-      <Controls isDisabled={isLoading} onSend={handleMessageSend} />
+      <Controls isDisabled={isLoading || isStreaming} onSend={handleMessageSend} />
     </div>
   )
 };
