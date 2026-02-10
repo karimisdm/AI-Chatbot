@@ -16,17 +16,33 @@ function App() {
     setMessages(prevMessages => [...prevMessages, message])
   }
 
+  function updateLastMessageContent(content){
+    setMessages((prevMessages)=>
+     prevMessages.map((message, index)=>
+       index === prevMessages.length - 1 ? {...message, content: message.content + content} : message)
+  );
+  }
+
   async function handleMessageSend(input) {
     addMessage({ content: input, role: 'user' });
     setIsLoading(true);
     try {
-      const result = await assistant.chatWithAI(input);
-       addMessage({ content: result, role: 'bot' });
+      const result = await assistant.chatStreaming(input);
+      let isFirstChunk = false;
+      for await (const chunk of result){
+        if(!isFirstChunk){
+          isFirstChunk = true;
+          addMessage({content:'', role:'bot'});
+          setIsLoading(false);
+        }
+        updateLastMessageContent(chunk);
+      } 
     } catch (error) {
       addMessage({
         content: "Sorry, there was an error processing your request. Please try again later. Error: " + error.message,
         role: 'System'
-      })
+      });
+      // setIsLoading(false);
     }finally{
       setIsLoading(false);
     }

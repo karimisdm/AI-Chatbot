@@ -24,10 +24,12 @@ export class GoogleAI_Assistant {
     //using generator for handling streaming responses.
     async *chatStreaming(content){
         try {
-            const result = await this.chat.sendMessageStreaming(content);
-
-            for await (const chunk of result){
-                yield chunk.response.text();
+            const result = await this.chat.sendMessageStream(content);
+            for await (const chunk of result.stream){
+                const text = chunk.text();
+                if(text){
+                    yield text;
+                }
             }
         } catch (error) {
              console.error("Error in chatStreaming:", error); 
