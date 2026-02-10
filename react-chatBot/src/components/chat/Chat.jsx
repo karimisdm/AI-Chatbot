@@ -20,7 +20,10 @@ export function Chat({ messages }) {
     }, [messages]);
 
     useEffect(() => {
-        messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const lastMessage = messages[messages.length-1];//when user send a message, scroll should be on the users message after ai response.
+        if(lastMessage?.role === 'user'){
+              messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
     }, [messages]);
 
     const Welcome_Message_Group = [
