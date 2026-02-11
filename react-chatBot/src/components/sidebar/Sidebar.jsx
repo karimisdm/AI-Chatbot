@@ -12,9 +12,16 @@ const CHATS = [
 export function Sidebar({chats=CHATS, activeChatId = 1}){
     return(
         <div className={styles.Sidebar}>
-            <ul>
+            <ul className={styles.Chats}>
                 {chats.map(chat=>
-                    <li key={chat.id}>{chat.title}</li>
+                    <li key={chat.id} className={styles.Chat} data-active={chat.id === activeChatId}>
+                        <button className={styles.ChatButton}>
+                            <div className={styles.ChatTitle}>
+                                {chat.title}
+                            </div>
+                                
+                        </button>
+                        </li>
                 )}
             </ul>
         </div>
