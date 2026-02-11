@@ -28,3 +28,16 @@
   border-radius: 16px;
   overflow-y: auto;
 }
+.Content {
+  display: flex;
+  flex-grow: 1;
+  gap: 16px;
+  width: 100%;
+  overflow: hidden;
+}
+.Main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 16px;
+}

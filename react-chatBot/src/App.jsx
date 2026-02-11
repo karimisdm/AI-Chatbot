@@ -1,5 +1,6 @@
 import styles from './App.module.css'
 import { useState } from 'react';
+import { Sidebar } from './components/sidebar/Sidebar.jsx';
 import { Chat } from './components/chat/Chat.jsx'
 import { Controls } from './components/controls/Controls.jsx';
 import { GoogleAI_Assistant } from './assistants/googleai.js';
@@ -16,11 +17,11 @@ function App() {
     setMessages(prevMessages => [...prevMessages, message])
   }
 
-  function updateLastMessageContent(content){
-    setMessages((prevMessages)=>
-     prevMessages.map((message, index)=>
-       index === prevMessages.length - 1 ? {...message, content: message.content + content} : message)
-  );
+  function updateLastMessageContent(content) {
+    setMessages((prevMessages) =>
+      prevMessages.map((message, index) =>
+        index === prevMessages.length - 1 ? { ...message, content: message.content + content } : message)
+    );
   }
 
   async function handleMessageSend(input) {
@@ -29,15 +30,15 @@ function App() {
     try {
       const result = await assistant.chatStreaming(input);
       let isFirstChunk = false;
-      for await (const chunk of result){
-        if(!isFirstChunk){
+      for await (const chunk of result) {
+        if (!isFirstChunk) {
           isFirstChunk = true;
-          addMessage({content:'', role:'bot'});
+          addMessage({ content: '', role: 'bot' });
           setIsLoading(false);
           setIsStreaming(true);
         }
         updateLastMessageContent(chunk);
-      } 
+      }
       setIsStreaming(false);
     } catch (error) {
       addMessage({
@@ -45,7 +46,7 @@ function App() {
         role: 'System'
       });
       // setIsLoading(false);
-    }finally{
+    } finally {
       setIsLoading(false);
       setIsStreaming(false);
     }
@@ -53,15 +54,21 @@ function App() {
   }
   return (
     <div className={styles.App}>
-      {isLoading && <Loader/>}
+      {isLoading && <Loader />}
       <header className={styles.Header}>
         <img src='./chatbot.png' className={styles.Logo} />
         <h2 className={styles.Title}>AI ChatBot</h2>
       </header>
-      <div className={styles.ChatContainer}>
-        <Chat messages={messages} />
+      <div className={styles.Content}>
+        <Sidebar />
+        <main className={styles.Main}>
+          <div className={styles.ChatContainer}>
+            <Chat messages={messages} />
+          </div>
+          <Controls isDisabled={isLoading || isStreaming} onSend={handleMessageSend} />
+
+        </main>
       </div>
-      <Controls isDisabled={isLoading || isStreaming} onSend={handleMessageSend} />
     </div>
   )
 };
@@ -69,11 +76,6 @@ function App() {
 // const initialMessages = [
 //   { role: 'bot', content: 'Hello! How can I assist you today?' },
 //   { role: 'user', content: 'Can you tell me a joke?' },
-//   { role: 'bot', content: 'Why did the scarecrow win an award? Because he was outstanding in his field!' },
-//   { role: 'user', content: 'Haha, that was a good one! Thanks!'},
-//   { role: 'bot', content: 'You\'re welcome! If you have any more questions or need assistance, feel free to ask.' },
-//   { role: 'user', content: 'What is the capital of France?' },
-//   { role: 'bot', content: 'The capital of France is Paris.' }
 // ]
 
 export default App

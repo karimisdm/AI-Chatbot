@@ -1,0 +1,6 @@
+.Sidebar {
+    flex-shrink: 0;
+    width: 260px;
+    padding: 8px;
+    border-radius: 16px;
+}
