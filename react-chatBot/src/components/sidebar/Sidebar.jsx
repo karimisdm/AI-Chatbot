@@ -1,18 +1,32 @@
 import styles from './Sidebar.module.css';
-
+import { useState } from 'react';
 const CHATS = [
     { id: 1, title: "How to use AI" },
     { id: 2, title: "What is React?" },
     { id: 3, title: "What is JavaScript?" },
     { id: 4, title: "Gemini or ChatGPT?" },
 ];
+
 export function Sidebar({ chats = CHATS, activeChatId = 1 }) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    function handleSidebarToggle(){
+      setIsOpen(!isOpen);
+ };
+   function handleEscapeClick(e){
+    if(isOpen &&e.key === 'Escape'){
+        setIsOpen(false);
+    }
+   }
+
+
+
     return (
         <>
-            <button className={styles.MenuButton}>
+            <button className={styles.MenuButton} onClick={handleSidebarToggle} onKeyDown={handleEscapeClick}>
                 <MenuIcon />
             </button>
-            <div className={styles.Sidebar}>
+            <div className={styles.Sidebar} data-open={isOpen}>
                 <ul className={styles.Chats}>
                     {chats.map(chat =>
                         <li key={chat.id} className={styles.Chat} data-active={chat.id === activeChatId}>
