@@ -45,6 +45,21 @@
     cursor: pointer;
 }
 
+.Overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
+
+
 @media screen and (max-width: 768px) {
     .Sidebar{
         position: fixed;
@@ -61,6 +76,9 @@
         transform: translateX(0);
     }
     .MenuButton {
+        display: block;
+    }
+    .Overlay{
         display: block;
     }
     

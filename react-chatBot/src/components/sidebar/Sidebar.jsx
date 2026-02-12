@@ -17,9 +17,7 @@ export function Sidebar({ chats = CHATS, activeChatId = 1 }) {
     if(isOpen &&e.key === 'Escape'){
         setIsOpen(false);
     }
-   }
-
-
+   };
 
     return (
         <>
@@ -40,6 +38,7 @@ export function Sidebar({ chats = CHATS, activeChatId = 1 }) {
                     )}
                 </ul>
             </div>
+            {isOpen && <div className={styles.Overlay} onClick={handleSidebarToggle}/>}
         </>
     )
 }
