@@ -42,3 +42,10 @@
   flex-grow: 1;
   gap: 16px;
 }
+
+@media screen and (max-width: 760px) {
+  .Header {
+    padding-left: 0;
+  }
+  
+}

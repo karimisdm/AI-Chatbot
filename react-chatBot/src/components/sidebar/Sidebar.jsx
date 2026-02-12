@@ -1,29 +1,38 @@
 import styles from './Sidebar.module.css';
 
 const CHATS = [
-    {id:1, title: "How to use AI"},
-    {id:2, title:"What is React?"},
-    {id:3, title:"What is JavaScript?"},
-    {id:4, title:"Gemini or ChatGPT?"},
-]
+    { id: 1, title: "How to use AI" },
+    { id: 2, title: "What is React?" },
+    { id: 3, title: "What is JavaScript?" },
+    { id: 4, title: "Gemini or ChatGPT?" },
+];
+export function Sidebar({ chats = CHATS, activeChatId = 1 }) {
+    return (
+        <>
+            <button className={styles.MenuButton}>
+                <MenuIcon />
+            </button>
+            <div className={styles.Sidebar}>
+                <ul className={styles.Chats}>
+                    {chats.map(chat =>
+                        <li key={chat.id} className={styles.Chat} data-active={chat.id === activeChatId}>
+                            <button className={styles.ChatButton}>
+                                <div className={styles.ChatTitle}>
+                                    {chat.title}
+                                </div>
 
-
-
-export function Sidebar({chats=CHATS, activeChatId = 1}){
-    return(
-        <div className={styles.Sidebar}>
-            <ul className={styles.Chats}>
-                {chats.map(chat=>
-                    <li key={chat.id} className={styles.Chat} data-active={chat.id === activeChatId}>
-                        <button className={styles.ChatButton}>
-                            <div className={styles.ChatTitle}>
-                                {chat.title}
-                            </div>
-                                
-                        </button>
+                            </button>
                         </li>
-                )}
-            </ul>
-        </div>
+                    )}
+                </ul>
+            </div>
+        </>
+    )
+}
+
+function MenuIcon() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+            <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" /></svg>
     )
 }
