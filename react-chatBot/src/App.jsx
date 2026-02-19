@@ -1,5 +1,5 @@
 import styles from './App.module.css'
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Sidebar } from './components/sidebar/Sidebar.jsx';
 import { Chat } from './components/chat/Chat.jsx'
 import { Controls } from './components/controls/Controls.jsx';
@@ -8,10 +8,16 @@ import { Loader } from './components/loader/Loader.jsx';
 // import { openAI_Assistant } from './assistants/openai.js';
 
 const CHATS = [
-    { id: 1, title: "How to use AI" },
-    { id: 2, title: "What is React?" },
-    { id: 3, title: "What is JavaScript?" },
-    { id: 4, title: "Gemini or ChatGPT?" },
+    { id: 2, title: "What is React?",
+      messages:[
+        { role: 'bot', content: 'React is a JavaScript library for building user interfaces.' },
+        { role: 'user', content: 'Who developed React?' },
+      ]
+     },
+    { id: 4, title: "Gemini or ChatGPT?", messages: [
+        { role: 'user', content: 'Which one is better, Gemini or ChatGPT?' },
+        { role: 'bot', content: 'Both Gemini and ChatGPT are powerful language models developed by OpenAI. The choice between them depends on your specific use case and requirements.' }
+    ] },
 ];
 
 function App() {
@@ -21,6 +27,8 @@ function App() {
   const [isStreaming, setIsStreaming] = useState(false);  // const assistant = new openAI_Assistant();
   const [chats, setChats] = useState(CHATS);
   const [activeChatId, setActiveChatId] = useState(1);
+
+  const activeChatMessages = useMemo(()=> chats.find(chat => chat.id === activeChatId)?.messages || [], [chats, activeChatId]);
 
   function addMessage(message) {
     setMessages(prevMessages => [...prevMessages, message])
@@ -72,7 +80,7 @@ function App() {
         <Sidebar chats={chats} activeChatId={activeChatId} onChatClickId={setActiveChatId} />
         <main className={styles.Main}>
           <div className={styles.ChatContainer}>
-            <Chat messages={messages} />
+            <Chat messages={messages} chatId={activeChatId} chatMessages={activeChatMessages} />
           </div>
           <Controls isDisabled={isLoading || isStreaming} onSend={handleMessageSend} />
 

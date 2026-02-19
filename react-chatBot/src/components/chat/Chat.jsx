@@ -2,7 +2,7 @@ import styles from './chat.module.css'
 import Markdown from 'react-markdown'
 import { useEffect, useMemo, useRef } from 'react'
 
-export function Chat({ messages }) {
+export function Chat({ messages}) {
     const messageEndRef = useRef(null);
     const messagesGroups = useMemo(() => {
         const groups = [];
@@ -23,7 +23,7 @@ export function Chat({ messages }) {
         const lastMessage = messages[messages.length-1];//when user send a message, scroll should be on the users message after ai response.
         if(lastMessage?.role === 'user'){
               messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }
+        };
     }, [messages]);
 
     const Welcome_Message_Group = [
