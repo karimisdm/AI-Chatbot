@@ -1,13 +1,8 @@
 import styles from './Sidebar.module.css';
 import { useState } from 'react';
-const CHATS = [
-    { id: 1, title: "How to use AI" },
-    { id: 2, title: "What is React?" },
-    { id: 3, title: "What is JavaScript?" },
-    { id: 4, title: "Gemini or ChatGPT?" },
-];
 
-export function Sidebar({ chats = CHATS, activeChatId = 1 }) {
+
+export function Sidebar({ chats, activeChatId, onChatClickId}) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleSidebarToggle(){
@@ -18,6 +13,9 @@ export function Sidebar({ chats = CHATS, activeChatId = 1 }) {
         setIsOpen(false);
     }
    };
+   function handleChatClick(chatId){
+     onChatClickId(chatId);
+   }
 
     return (
         <>
@@ -27,7 +25,7 @@ export function Sidebar({ chats = CHATS, activeChatId = 1 }) {
             <div className={styles.Sidebar} data-open={isOpen}>
                 <ul className={styles.Chats}>
                     {chats.map(chat =>
-                        <li key={chat.id} className={styles.Chat} data-active={chat.id === activeChatId}>
+                        <li key={chat.id} className={styles.Chat} data-active={chat.id === activeChatId} onClick={()=>{handleChatClick(chat.id)}}>
                             <button className={styles.ChatButton}>
                                 <div className={styles.ChatTitle}>
                                     {chat.title}

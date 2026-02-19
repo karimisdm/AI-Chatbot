@@ -7,11 +7,20 @@ import { GoogleAI_Assistant } from './assistants/googleai.js';
 import { Loader } from './components/loader/Loader.jsx';
 // import { openAI_Assistant } from './assistants/openai.js';
 
+const CHATS = [
+    { id: 1, title: "How to use AI" },
+    { id: 2, title: "What is React?" },
+    { id: 3, title: "What is JavaScript?" },
+    { id: 4, title: "Gemini or ChatGPT?" },
+];
+
 function App() {
   const [messages, setMessages] = useState([]);
   const assistant = new GoogleAI_Assistant();
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);  // const assistant = new openAI_Assistant();
+  const [chats, setChats] = useState(CHATS);
+  const [activeChatId, setActiveChatId] = useState(1);
 
   function addMessage(message) {
     setMessages(prevMessages => [...prevMessages, message])
@@ -60,7 +69,7 @@ function App() {
         <h2 className={styles.Title}>AI ChatBot</h2>
       </header>
       <div className={styles.Content}>
-        <Sidebar />
+        <Sidebar chats={chats} activeChatId={activeChatId} onChatClickId={setActiveChatId} />
         <main className={styles.Main}>
           <div className={styles.ChatContainer}>
             <Chat messages={messages} />
