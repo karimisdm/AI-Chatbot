@@ -1,51 +1,72 @@
-import styles from './chat.module.css'
-import Markdown from 'react-markdown'
-import { useEffect, useMemo, useRef } from 'react'
+import {useState} from 'react'
+import { Messages } from '../Messages/Messages.jsx'
+import { Controls } from '../controls/Controls.jsx';
+import { Loader } from '../loader/Loader.jsx';
+import { GoogleAI_Assistant } from '../../assistants/googleAI.js';
+import styles from './Chat.module.css'
 
-export function Chat({ messages}) {
-    const messageEndRef = useRef(null);
-    const messagesGroups = useMemo(() => {
-        const groups = [];
-        let current = [];
-        for (const message of messages) {
-            if (message.role === 'user') {
-                if (current.length) groups.push(current);
-                current = [message];
-            } else {
-                current.push(message);
-            }
+
+export function Chat() {
+
+  const [messages, setMessages] = useState([]);
+  const assistant = new GoogleAI_Assistant();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);  // const assistant = new openAI_Assistant();
+  // const [activeChatId, setActiveChatId] = useState(1);
+
+  // const activeChatMessages = useMemo(()=> chats.find(chat => chat.id === activeChatId)?.messages || [], [chats, activeChatId]);
+
+  function addMessage(message) {
+    setMessages(prevMessages => [...prevMessages, message])
+  }
+
+  function updateLastMessageContent(content) {
+    setMessages((prevMessages) =>
+      prevMessages.map((message, index) =>
+        index === prevMessages.length - 1 ? { ...message, content: message.content + content } : message)
+    );
+  }
+
+  async function handleMessageSend(input) {
+    addMessage({ content: input, role: 'user' });
+    setIsLoading(true);
+    try {
+      const result = await assistant.chatStreaming(input);
+      let isFirstChunk = false;
+      for await (const chunk of result) {
+        if (!isFirstChunk) {
+          isFirstChunk = true;
+          addMessage({ content: '', role: 'bot' });
+          setIsLoading(false);
+          setIsStreaming(true);
         }
-        if (current.length) groups.push(current);
-        return groups;
-    }, [messages]);
+        updateLastMessageContent(chunk);
+      }
+      setIsStreaming(false);
+    } catch (error) {
+      addMessage({
+        content: "Sorry, there was an error processing your request. Please try again later. Error: " + error.message,
+        role: 'System'
+      });
+      // setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+      setIsStreaming(false);
+    }
 
-    useEffect(() => {
-        const lastMessage = messages[messages.length-1];//when user send a message, scroll should be on the users message after ai response.
-        if(lastMessage?.role === 'user'){
-              messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        };
-    }, [messages]);
+  }
 
-    const Welcome_Message_Group = [
-        {
-            role: 'bot',
-            content: 'Hello! How can I assist you today?'
-        }
-    ]
     return (
-        <div className={styles.Chat}>
-            {[Welcome_Message_Group, ...messagesGroups].map((messages, groupIndex) => (
-                <div key={groupIndex} className={styles.Group}>
-                    {messages.map((message, index) => (
-                        <div key={index} data-role={message.role} className={styles.Message}>
-                            <Markdown>{message.content}</Markdown>
-                        </div>
-                    ))}
-                </div>
-            ))}
+        <>
+           {isLoading && <Loader />}
 
-            <div ref={messageEndRef} />
-        </div>
+           <div className={styles.Chat}>
+            <Messages messages={messages} />
+           </div>
+
+           <Controls isDisabled={isLoading || isStreaming} onSend={handleMessageSend} />
+
+        </>
     )
-
+    
 }
