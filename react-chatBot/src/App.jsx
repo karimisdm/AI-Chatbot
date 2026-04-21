@@ -19,6 +19,7 @@ const CHATS = [
 
 function App() {
   const [chats, setChats] = useState(CHATS);
+  const [activeChatId, setActiveChatId] = useState(chats[1].id);
   return (
     <div className={styles.App}>
      
@@ -27,7 +28,7 @@ function App() {
         <h2 className={styles.Title}>AI ChatBot</h2>
       </header>
       <div className={styles.Content}>
-        <Sidebar chats={chats} />
+        <Sidebar chats={chats} activeChatId={activeChatId} onActiveChatIdChange={setActiveChatId} />
         <main className={styles.Main}>
           <Chat/>
           
@@ -36,10 +37,5 @@ function App() {
     </div>
   )
 };
-
-// const initialMessages = [
-//   { role: 'bot', content: 'Hello! How can I assist you today?' },
-//   { role: 'user', content: 'Can you tell me a joke?' },
-// ]
 
 export default App

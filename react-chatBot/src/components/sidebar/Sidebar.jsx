@@ -2,7 +2,7 @@ import styles from './Sidebar.module.css';
 import { useState } from 'react';
 
 
-export function Sidebar({ chats, activeChatId, onChatClickId}) {
+export function Sidebar({ chats, activeChatId, onActiveChatIdChange}) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleSidebarToggle(){
@@ -14,7 +14,7 @@ export function Sidebar({ chats, activeChatId, onChatClickId}) {
     }
    };
    function handleChatClick(chatId){
-     onChatClickId(chatId);
+     onActiveChatIdChange(chatId);
    }
 
     return (
