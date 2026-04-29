@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useEffect, useState } from 'react'
 import { Messages } from '../Messages/Messages.jsx'
 import { Controls } from '../controls/Controls.jsx';
 import { Loader } from '../loader/Loader.jsx';
@@ -6,67 +6,81 @@ import { GoogleAI_Assistant } from '../../assistants/googleAI.js';
 import styles from './Chat.module.css'
 
 
-export function Chat() {
+export function Chat({ chatMessages, chatId, onChatMessagesUpdate }) {
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(chatMessages);
   const assistant = new GoogleAI_Assistant();
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);  // const assistant = new openAI_Assistant();
-  // const [activeChatId, setActiveChatId] = useState(1);
 
-  // const activeChatMessages = useMemo(()=> chats.find(chat => chat.id === activeChatId)?.messages || [], [chats, activeChatId]);
+  useEffect(() => {
+    setMessages(chatMessages);
+  }, [chatId, chatMessages]);
 
   function addMessage(message) {
-    setMessages(prevMessages => [...prevMessages, message])
+    setMessages((prevMessages) => {
+      const nextMessages = [...prevMessages, message];
+      onChatMessagesUpdate(nextMessages);
+      return nextMessages;
+    });
   }
 
   function updateLastMessageContent(content) {
-    setMessages((prevMessages) =>
-      prevMessages.map((message, index) =>
-        index === prevMessages.length - 1 ? { ...message, content: message.content + content } : message)
-    );
+    setMessages((prevMessages) => {
+      const nextMessages = prevMessages.map((message, index) =>
+        index === prevMessages.length - 1 ? { ...message, content: message.content + content } : message
+      );
+      onChatMessagesUpdate(nextMessages);
+      return nextMessages;
+    });
   }
 
   async function handleMessageSend(input) {
-    addMessage({ content: input, role: 'user' });
+    const userMessage = { role: "user", content: input };
+    addMessage(userMessage);
     setIsLoading(true);
     try {
-      const result = await assistant.chatStreaming(input);
+      const result = await assistant.chatStreaming(
+        input,
+        [...messages.filter(({ role }) => role !== "system"), userMessage]
+      );
+
       let isFirstChunk = false;
       for await (const chunk of result) {
         if (!isFirstChunk) {
           isFirstChunk = true;
-          addMessage({ content: '', role: 'bot' });
+          addMessage({ content: "", role: "assistant" });
           setIsLoading(false);
           setIsStreaming(true);
         }
+
         updateLastMessageContent(chunk);
       }
+
       setIsStreaming(false);
     } catch (error) {
       addMessage({
-        content: "Sorry, there was an error processing your request. Please try again later. Error: " + error.message,
-        role: 'System'
+        content:
+          error?.message ??
+          "Sorry, I couldn't process your request. Please try again!",
+        role: "system",
       });
-      // setIsLoading(false);
-    } finally {
       setIsLoading(false);
       setIsStreaming(false);
     }
-
   }
 
-    return (
-        <>
-           {isLoading && <Loader />}
+  return (
+    <>
+      {isLoading && <Loader />}
 
-           <div className={styles.Chat}>
-            <Messages messages={messages} />
-           </div>
+      <div className={styles.Chat}>
+        <Messages messages={messages} />
+      </div>
 
-           <Controls isDisabled={isLoading || isStreaming} onSend={handleMessageSend} />
+      <Controls isDisabled={isLoading || isStreaming} onSend={handleMessageSend} />
 
-        </>
-    )
-    
+    </>
+  )
+
 }

@@ -1,7 +1,7 @@
 import styles from './App.module.css'
 import { Sidebar } from './components/sidebar/Sidebar.jsx';
 import {Chat} from './components/chat/Chat.jsx'
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 // import { openAI_Assistant } from './assistants/openai.js';
 
 const CHATS = [
@@ -19,7 +19,18 @@ const CHATS = [
 
 function App() {
   const [chats, setChats] = useState(CHATS);
-  const [activeChatId, setActiveChatId] = useState(chats[1].id);
+  const [activeChatId, setActiveChatId] = useState(chats[0].id);
+  const activeChatMessages = useMemo(()=> chats.find(
+    (chat) => chat.id === activeChatId)?.messages ?? [],[chats, activeChatId]);
+  
+  function updateChats(messages){
+     setChats((prevChats)=> prevChats.map((chat)=> chat.id === activeChatId? {...chat, messages}: chat))
+  };
+
+  function handleChatMessagesUpdate(messages){
+    updateChats(messages);  
+  }  
+
   return (
     <div className={styles.App}>
      
@@ -30,7 +41,8 @@ function App() {
       <div className={styles.Content}>
         <Sidebar chats={chats} activeChatId={activeChatId} onActiveChatIdChange={setActiveChatId} />
         <main className={styles.Main}>
-          <Chat/>
+
+          <Chat  chatId={activeChatId} chatMessages={activeChatMessages} onChatMessagesUpdate={handleChatMessagesUpdate}/>
           
         </main>
       </div>
