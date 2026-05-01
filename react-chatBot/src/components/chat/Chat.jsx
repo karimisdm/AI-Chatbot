@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Messages } from '../Messages/Messages.jsx'
 import { Controls } from '../controls/Controls.jsx';
 import { Loader } from '../loader/Loader.jsx';
@@ -6,16 +6,12 @@ import { GoogleAI_Assistant } from '../../assistants/googleAI.js';
 import styles from './Chat.module.css'
 
 
-export function Chat({ chatMessages, chatId, onChatMessagesUpdate }) {
+export function Chat({ chatMessages, onChatMessagesUpdate }) {
 
   const [messages, setMessages] = useState(chatMessages);
   const assistant = new GoogleAI_Assistant();
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);  // const assistant = new openAI_Assistant();
-
-  useEffect(() => {
-    setMessages(chatMessages);
-  }, [chatId, chatMessages]);
 
   function addMessage(message) {
     setMessages((prevMessages) => {

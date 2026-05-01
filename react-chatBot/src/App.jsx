@@ -42,7 +42,7 @@ function App() {
         <Sidebar chats={chats} activeChatId={activeChatId} onActiveChatIdChange={setActiveChatId} />
         <main className={styles.Main}>
 
-          <Chat  chatId={activeChatId} chatMessages={activeChatMessages} onChatMessagesUpdate={handleChatMessagesUpdate}/>
+          <Chat key={activeChatId} chatId={activeChatId} chatMessages={activeChatMessages} onChatMessagesUpdate={handleChatMessagesUpdate}/>
           
         </main>
       </div>
