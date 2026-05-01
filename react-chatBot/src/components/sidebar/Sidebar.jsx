@@ -23,6 +23,9 @@ export function Sidebar({ chats, activeChatId, onActiveChatIdChange}) {
                 <MenuIcon />
             </button>
             <div className={styles.Sidebar} data-open={isOpen}>
+                <button className={styles.NewChatButton}>
+                    New Chat
+                </button>
                 <ul className={styles.Chats}>
                     {chats.map(chat =>
                         <li key={chat.id} className={styles.Chat} data-active={chat.id === activeChatId} onClick={()=>{handleChatClick(chat.id)}}>
