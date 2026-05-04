@@ -69,6 +69,10 @@
     cursor: pointer;
     color: light-dark(#212121, #ffffff);
 }
+.NewChatButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
 
 

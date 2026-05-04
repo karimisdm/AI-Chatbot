@@ -28,12 +28,14 @@ function App() {
   const activeChatMessages = useMemo(() => chats.find(
     (chat) => chat.id === activeChatId)?.messages ?? [], [chats, activeChatId]);
 
-  const hasEmptyChat = chats.some(chat => chat.title === 'New Chat' && chat.messages.length === 0);  
+  const hasEmptyChat = chats.some(chat =>
+     chat.title === 'New Chat' && chat.messages.length === 0);  
 
   function handleChatMessagesUpdate(messages) {
+    const title = messages[0]?.content.split(" ").slice(0,5).join(" ")|| "New Chat";
     setChats((prevChats) =>
       prevChats.map((chat) =>
-        chat.id === activeChatId ? { ...chat, messages } : chat))
+        chat.id === activeChatId ? { ...chat, messages, title } : chat))
 
   }
 
