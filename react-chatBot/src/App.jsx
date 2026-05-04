@@ -2,31 +2,19 @@ import styles from './App.module.css'
 import { v4 as uuidv4 } from 'uuid';
 import { Sidebar } from './components/sidebar/Sidebar.jsx';
 import { Chat } from './components/chat/Chat.jsx'
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 // import { openAI_Assistant } from './assistants/openai.js';
-
-const CHATS = [
-  {
-    id: 2, title: "What is React?",
-    messages: [
-      { role: 'bot', content: 'React is a JavaScript library for building user interfaces.' },
-      { role: 'user', content: 'Who developed React?' },
-    ]
-  },
-  {
-    id: 4, title: "Gemini or ChatGPT?", messages: [
-      { role: 'user', content: 'Which one is better, Gemini or ChatGPT?' },
-      { role: 'bot', content: 'Both Gemini and ChatGPT are powerful language models developed by OpenAI. The choice between them depends on your specific use case and requirements.' }
-    ]
-  },
-];
-
 function App() {
-  const [chats, setChats] = useState(CHATS);
-  const [activeChatId, setActiveChatId] = useState(chats[0].id);
+  const initialChatId = uuidv4();
+  const [chats, setChats] = useState([{
+    id: initialChatId,
+    title: 'New Chat',
+    messages: []
+  }]);
+  const [activeChatId, setActiveChatId] = useState(initialChatId);
 
-  const activeChatMessages = useMemo(() => chats.find(
-    (chat) => chat.id === activeChatId)?.messages ?? [], [chats, activeChatId]);
+  // const activeChatMessages = useMemo(() => chats.find(
+  //   (chat) => chat.id === activeChatId)?.messages ?? [], [chats, activeChatId]);
 
   const hasEmptyChat = chats.some(chat =>
      chat.title === 'New Chat' && chat.messages.length === 0);  

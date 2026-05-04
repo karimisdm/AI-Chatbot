@@ -2,7 +2,7 @@ import styles from './Messages.module.css'
 import Markdown from 'react-markdown'
 import { useEffect, useMemo, useRef } from 'react'
 
-export function Messages({ messages}) {
+export function Messages({ messages }) {
     const messageEndRef = useRef(null);
     const messagesGroups = useMemo(() => {
         const groups = [];
@@ -20,9 +20,9 @@ export function Messages({ messages}) {
     }, [messages]);
 
     useEffect(() => {
-        const lastMessage = messages[messages.length-1];//when user send a message, scroll should be on the users message after ai response.
-        if(lastMessage?.role === 'user'){
-              messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const lastMessage = messages[messages.length - 1];//when user send a message, scroll should be on the users message after ai response.
+        if (lastMessage?.role === 'user') {
+            messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
         };
     }, [messages]);
 
@@ -38,7 +38,11 @@ export function Messages({ messages}) {
                 <div key={groupIndex} className={styles.Group}>
                     {messages.map((message, index) => (
                         <div key={index} data-role={message.role} className={styles.Message}>
-                            <Markdown>{message.content}</Markdown>
+                            <div className={styles.Markdown}>
+                                <Markdown>
+                                    {message.content}
+                                </Markdown>
+                            </div>
                         </div>
                     ))}
                 </div>
