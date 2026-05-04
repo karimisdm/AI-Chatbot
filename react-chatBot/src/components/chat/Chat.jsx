@@ -6,7 +6,7 @@ import { GoogleAI_Assistant } from '../../assistants/googleAI.js';
 import styles from './Chat.module.css'
 
 
-export function Chat({ chatMessages, onChatMessagesUpdate }) {
+export function Chat({ chatMessages, onChatMessagesUpdate, chatId, isActive=false }) {
 
   const [messages, setMessages] = useState(chatMessages);
   const assistant = new GoogleAI_Assistant();
@@ -16,7 +16,7 @@ export function Chat({ chatMessages, onChatMessagesUpdate }) {
   function addMessage(message) {
     setMessages((prevMessages) => {
       const nextMessages = [...prevMessages, message];
-      onChatMessagesUpdate(nextMessages);
+      onChatMessagesUpdate(chatId, nextMessages);
       return nextMessages;
     });
   }
@@ -26,7 +26,7 @@ export function Chat({ chatMessages, onChatMessagesUpdate }) {
       const nextMessages = prevMessages.map((message, index) =>
         index === prevMessages.length - 1 ? { ...message, content: message.content + content } : message
       );
-      onChatMessagesUpdate(nextMessages);
+      onChatMessagesUpdate(chatId, nextMessages);
       return nextMessages;
     });
   }
@@ -66,6 +66,7 @@ export function Chat({ chatMessages, onChatMessagesUpdate }) {
     }
   }
 
+  if (!isActive) return null;
   return (
     <>
       {isLoading && <Loader />}

@@ -31,11 +31,11 @@ function App() {
   const hasEmptyChat = chats.some(chat =>
      chat.title === 'New Chat' && chat.messages.length === 0);  
 
-  function handleChatMessagesUpdate(messages) {
+  function handleChatMessagesUpdate(id,messages) {
     const title = messages[0]?.content.split(" ").slice(0,5).join(" ")|| "New Chat";
     setChats((prevChats) =>
       prevChats.map((chat) =>
-        chat.id === activeChatId ? { ...chat, messages, title } : chat))
+        chat.id === id ? { ...chat, messages, title } : chat))
 
   }
 
@@ -62,9 +62,15 @@ function App() {
         <Sidebar chats={chats} activeChatId={activeChatId} onActiveChatIdChange={setActiveChatId} onNewChatCreate={handleNewChatCreate} 
           hasEmptyChat={hasEmptyChat}/>
         <main className={styles.Main}>
+          {chats.filter(chat=> chat.id === activeChatId).map((chat)=>(
 
-          <Chat key={activeChatId} chatMessages={activeChatMessages} onChatMessagesUpdate={handleChatMessagesUpdate} />
-
+              <Chat key={chat.id}
+                chatId={chat.id}
+                isActive={chat.id === activeChatId}
+                chatMessages={chat.messages} 
+                onChatMessagesUpdate={handleChatMessagesUpdate}
+            />
+          ))}
         </main>
       </div>
     </div>
