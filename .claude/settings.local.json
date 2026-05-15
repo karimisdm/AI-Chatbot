@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \"^\\\\.\\\\.$\")",
+      "Bash(npm show *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node -e \"const v=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\(v.filter\\(x=>x.startsWith\\('7.'\\)\\).at\\(-1\\)\\)\")",
+      "Bash(Get-ChildItem -Path \"G:\\\\FrontEndDeveloping\\\\React-Node-Udemy\\\\react-ai-chatbot\\\\react-chatBot\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Skill(update-config)",
+      "Bash(npm test *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "Set-Location 'G:\\FrontEndDeveloping\\React-Node-Udemy\\react-ai-chatbot\\react-chatBot'; npm run build",
+            "shell": "powershell",
+            "statusMessage": "Building project...",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "Set-Location 'G:\\FrontEndDeveloping\\React-Node-Udemy\\react-ai-chatbot\\react-chatBot'; npm test",
+            "shell": "powershell",
+            "statusMessage": "Running tests...",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}
