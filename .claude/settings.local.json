@@ -10,7 +10,10 @@
       "Bash(Select-Object -ExpandProperty FullName)",
       "Bash(Sort-Object)",
       "Skill(update-config)",
-      "Bash(npm test *)"
+      "Bash(npm test *)",
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   },
   "hooks": {
@@ -20,14 +23,14 @@
         "hooks": [
           {
             "type": "command",
-            "command": "Set-Location 'G:\\FrontEndDeveloping\\React-Node-Udemy\\react-ai-chatbot\\react-chatBot'; npm run build",
+            "command": "Set-Location 'G:\\FrontEndDeveloping\\React-Node-Udemy\\react-chatbot'; npm run build",
             "shell": "powershell",
             "statusMessage": "Building project...",
             "async": true
           },
           {
             "type": "command",
-            "command": "Set-Location 'G:\\FrontEndDeveloping\\React-Node-Udemy\\react-ai-chatbot\\react-chatBot'; npm test",
+            "command": "Set-Location 'G:\\FrontEndDeveloping\\React-Node-Udemy\\react-chatbot'; npm test",
             "shell": "powershell",
             "statusMessage": "Running tests...",
             "async": true
