@@ -1,16 +1,62 @@
-# React + Vite
+# AI Chatbot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered chatbot built with React, integrating Google's Gemini API for real-time conversational responses.
 
-Currently, two official plugins are available:
+<img width="1266" height="975" alt="image" src="https://github.com/user-attachments/assets/9aedf572-1abf-447f-9f9d-fe9da0e88dfe" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
 
-## React Compiler
+This project explores how to integrate a large language model into a real frontend application, handling streaming responses, managing conversation state, and building a chat interface that feels responsive and natural to use.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- 💬 Real-time conversational interface powered by the Gemini API
+- ⚛️ Built with React using a component-based architecture
+- 🔄 Structured state management for conversation history
+- ⚡ Fast development experience with Vite
+- 🎨 Clean, responsive chat UI
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+| Category | Technology |
+|---|---|
+| Framework | React |
+| Build Tool | Vite |
+| AI Integration | Google Gemini API |
+| Language | JavaScript |
+| Linting | ESLint |
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- A Gemini API key ([get one here](https://ai.google.dev/))
+
+### Installation
+
+```bash
+git clone https://github.com/karimisdm/AI-Chatbot.git
+cd AI-Chatbot
+npm install
+```
+
+### Set up environment variables
+
+Create a `.env` file in the root directory:
+
+```
+VITE_GEMINI_API_KEY=your_api_key_here
+```
+
+### Run locally
+
+```bash
+npm run dev
+```
+
+## What I learned/focused on
+
+- Working with a streaming API and handling async responses in the UI
+- Structuring component state for a chat-style interface
+- Managing API keys and environment variables securely on the frontend
+- Keeping the interface responsive even while waiting on model output
